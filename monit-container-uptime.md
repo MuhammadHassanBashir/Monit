@@ -148,3 +148,6 @@ For further monitoring of container resources (CPU, memory, network, etc.), addi
 with this monit will get the container uptime. you can start , stop, restart , disable container service from monit as well.. 
 
 the script only use the "docker top <container-name>" command exit successfully and see the status "0". its simply mean container is running. if it will not get 0 status its mean container is not running and monit will send you alert nontification.
+
+
+remember: hr container creation k against process create hota ha monit process ko monitor kerta ha linux ma jis sa humy idea hojata ha k container kitni cpu/memory consume ker rha ha
