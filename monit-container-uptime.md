@@ -1,5 +1,8 @@
 # Using Monit to Monitor Docker Containers
 
+links: **https://github.com/naskio/monit-docker**
+links: **https://www.tecmint.com/monit-linux-services-monitoring/**
+
 Monit is an open-source tool used to monitor services and processes, ensuring they run as expected and, if possible, remediating issues automatically. This guide explains how to set up Monit to monitor Docker containers, including container status and basic restart capabilities.
 
 ---
