@@ -1,7 +1,7 @@
 # Using Monit to Monitor Docker Containers
 
-links: **https://github.com/naskio/monit-docker**
-links: **https://www.tecmint.com/monit-linux-services-monitoring/**
+      links: **https://github.com/naskio/monit-docker**
+      links: **https://www.tecmint.com/monit-linux-services-monitoring/**
 
 Monit is an open-source tool used to monitor services and processes, ensuring they run as expected and, if possible, remediating issues automatically. This guide explains how to set up Monit to monitor Docker containers, including container status and basic restart capabilities.
 
@@ -38,7 +38,7 @@ To store custom scripts for Monit:
 3. Add the following content to the script:
    ```bash
    #!/bin/bash
-   docker top "my-container"
+   docker top "uptime-kuma"              --> uptime-kuma is a container name
    exit $?
    ```
 
@@ -55,14 +55,14 @@ To store custom scripts for Monit:
 
 1. In your `conf.d` directory (`/etc/monit/conf.d`), create a configuration file for the container:
    ```bash
-   sudo nano /etc/monit/conf.d/check_container_my-container
+   sudo nano /etc/monit/conf.d/check_container_my-container.conf
    ```
 
 2. Add the following configuration:
    ```plaintext
-   CHECK PROGRAM my-container WITH PATH /etc/monit/scripts/check_container_my-container.sh
-     START PROGRAM = "/usr/bin/docker start my-container"
-     STOP PROGRAM = "/usr/bin/docker stop my-container"
+   CHECK PROGRAM uptime-kuma WITH PATH /etc/monit/scripts/check_container_my-container.sh
+     START PROGRAM = "/usr/bin/docker start uptime-kuma"
+     STOP PROGRAM = "/usr/bin/docker uptime-kuma"
      IF status != 0 FOR 3 CYCLES THEN RESTART
      IF 2 RESTARTS WITHIN 5 CYCLES THEN UNMONITOR
    ```
@@ -128,7 +128,7 @@ sudo tail -f /var/log/monit.log
 ### **Trigger an Alert**
 Stop the container manually to see if Monit restarts it:
 ```bash
-docker stop my-container
+docker stop uptime-kuma
 ```
 
 ### **Verify Status**
