@@ -325,4 +325,4 @@ Monit will now:
           start program "/usr/bin/systemctl sshd start"
           stop program "/usr/bin/systemctl sshd stop
 
-      then save the file and use **sudo monit -t** for confirming the monit configuration and the relaod the monit service **sudo systemctl reload monit**. after that would see that monit is monitoring your process. brower link: **http://<serverip>:2812**
+      then save the file and use **sudo monit -t** for confirming the monit configuration and the relaod the monit service **sudo systemctl reload monit**. after that would see that monit is monitoring your (docker , nginx , sshd )processcess. brower link: **http://<serverip>:2812**
