@@ -311,7 +311,7 @@ Monit will now:
 ## Complete summary:
 
 - pid k through process ko monit ma monitor kery k lye ap phily "/var/run/<desire process k against .pid file k name ko deky gye>"
-- phir RHEL ma /etc/monitrc file ko open kry gye , or ubuntu/debain ma /etc/monit/monitrc file ko open ker k is ma under **service** below content add ker dye gye..
+- phir **RHEL ma /etc/monitrc file ko open kry gye , or ubuntu/debain ma /etc/monit/monitrc file** ko open ker k is ma under **service** below content add ker dye gye..
       
       check process nginx with pidfile /var/run/nginx.pid
           start program = "/usr/bin/systemctl nginx start"
@@ -326,3 +326,56 @@ Monit will now:
           stop program "/usr/bin/systemctl sshd stop
 
       then save the file and use **sudo monit -t** for confirming the monit configuration and the relaod the monit service **sudo systemctl reload monit**. after that would see that monit is monitoring your (docker , nginx , sshd )processcess. brower link: **http://<serverip>:2812**
+
+
+### For monitoring program like container do the following steps
+
+- Create a script on any directory and paste below content. and give execution permission to the script.
+
+
+      sudo mkdir -p /etc/monit.d/scripts
+      sudo nano /etc/monit.d/scripts/check_container_uptime-kuma.sh
+
+      add below script in the file. this is for uptime-kuma container
+      
+            #!/bin/bash
+            docker top "uptime-kuma"       --> uptime-kuma is container name 
+            exit $?
+            
+      sudo chmod +x /etc/monit.d/scripts/check_container_uptime-kuma.sh
+
+- now open /etc/monitrc file and paste below content under services
+
+    CHECK PROGRAM uptime-kuma WITH PATH /etc/monit.d/scripts/check_container_uptime-kuma.sh     uptime-kuma is monit program name 
+     START PROGRAM = "/usr/bin/docker start uptime-kuma"             --> uptime-kuma is container name, jiska program monit ma monitor krna ha     
+     STOP PROGRAM = "/usr/bin/docker stop uptime-kuma"               --> uptime-kuma is container name   
+     IF status != 0 FOR 3 CYCLES THEN RESTART
+     IF 2 RESTARTS WITHIN 5 CYCLES THEN UNMONITOR
+
+- now check the monit configuration and reload monit service
+
+      sudo monit -t
+      sudo systemctl reload monit
+
+and refresh the browser, and you will see that monit is monitoring container program. and checking container is live and running...
+
+
+**Note:** Repeat the same steps for other container. you need to create a saparate script with different name under script folder and also create different program section on /etc/monitrc file for each program.. like i did for 2
+
+            CHECK PROGRAM uptime-kuma WITH PATH /etc/monit.d/scripts/check_container_uptime-kuma.sh
+                START PROGRAM = "/usr/bin/docker start uptime-kuma"
+                STOP PROGRAM = "/usr/bin/docker stop uptime-kuma"
+                IF status != 0 FOR 3 CYCLES THEN RESTART
+                IF 2 RESTARTS WITHIN 5 CYCLES THEN UNMONITOR
+            
+              CHECK PROGRAM mongobd WITH PATH /etc/monit.d/scripts/check_container_mongo.sh
+                START PROGRAM = "/usr/bin/docker start container_name"
+                STOP PROGRAM = "/usr/bin/docker stop container_name"
+                IF status != 0 FOR 3 CYCLES THEN RESTART
+                IF 2 RESTARTS WITHIN 5 CYCLES THEN UNMONITOR
+
+
+
+ 
+
+      
