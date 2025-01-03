@@ -308,7 +308,7 @@ Monit will now:
 - Restart the container if it fails for 3 cycles.
 - Unmonitor the container if it fails twice within 5 cycles.
 
-##Complete summary:
+## Complete summary:
 
 - pid k through process ko monit ma monitor kery k lye ap phily "/var/run/<desire process k against .pid file k name ko deky gye>"
 - phir RHEL ma /etc/monitrc file ko open kry gye , or ubuntu/debain ma /etc/monit/monitrc file ko open ker k is ma under **service** below content add ker dye gye..
