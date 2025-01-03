@@ -308,6 +308,21 @@ Monit will now:
 - Restart the container if it fails for 3 cycles.
 - Unmonitor the container if it fails twice within 5 cycles.
 
+##Complete summary:
 
+- pid k through process ko monit ma monitor kery k lye ap phily "/var/run/<desire process k against .pid file k name ko deky gye>"
+- phir RHEL ma /etc/monitrc file ko open kry gye , or ubuntu/debain ma /etc/monit/monitrc file ko open ker k is ma under **service** below content add ker dye gye..
+      
+      check process nginx with pidfile /var/run/nginx.pid
+          start program = "/usr/bin/systemctl nginx start"
+          stop program = "/usr/bin/systemctl nginx stop"
+      
+        check process docker with pidfile /var/run/docker.pid
+          start program = "/usr/bin/systemctl docker start"
+          stop program = "/usr/bin/systemctl docker stop"
+        
+        check process sshd with pidfile /var/run/sshd.pid
+          start program "/usr/bin/systemctl sshd start"
+          stop program "/usr/bin/systemctl sshd stop
 
-
+      then save the file and use **sudo monit -t** for confirming the monit configuration and the relaod the monit service **sudo systemctl reload monit**. after that would see that monit is monitoring your process. brower link: **http://<serverip>:2812**
